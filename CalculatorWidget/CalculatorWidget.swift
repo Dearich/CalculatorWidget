@@ -10,21 +10,24 @@ import SwiftUI
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(value: "123", runningNumber: 0, currentOperation: .none)
+        SimpleEntry(value: "2", sequence: "1+1=", size: context.displaySize)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(value: ModelData.shared.provisionModel.value,
-                                runningNumber: ModelData.shared.provisionModel.runningNumber,
-                                currentOperation: ModelData().provisionModel.currentOperation)
+        let entry = SimpleEntry(
+            value: CalculationManager.shared.provisionModel.value,
+            sequence: CalculationManager.shared.provisionModel.sequence,
+            size: context.displaySize
+        )
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        let entry = SimpleEntry(value: ModelData.shared.provisionModel.value,
-                                runningNumber: ModelData.shared.provisionModel.runningNumber,
-                                currentOperation: ModelData().provisionModel.currentOperation)
-        
+        let entry = SimpleEntry(
+            value: CalculationManager.shared.provisionModel.value,
+            sequence: CalculationManager.shared.provisionModel.sequence,
+            size: context.displaySize
+        )
         let timeline = Timeline(entries: [entry], policy: .atEnd)
         completion(timeline)
     }
@@ -33,8 +36,8 @@ struct Provider: TimelineProvider {
 struct SimpleEntry: TimelineEntry {
     let date: Date = .now
     let value: String
-    let runningNumber: Int
-    let currentOperation: Operation
+    let sequence: String
+    let size: CGSize
 }
 
 struct CalculatorWidgetEntryView : View {
@@ -59,8 +62,8 @@ struct CalculatorWidget: Widget {
                 CalculatorWidgetEntryView(entry: entry)
             }
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("Basic Calculator as Interactive Widget")
+        .description("This is an calculator widget.")
         .supportedFamilies([.systemLarge])
     }
 }
@@ -68,5 +71,5 @@ struct CalculatorWidget: Widget {
 #Preview(as: .systemLarge) {
     CalculatorWidget()
 } timeline: {
-    SimpleEntry(value: "233", runningNumber: 123, currentOperation: .none)
+    SimpleEntry(value: "2", sequence: "1+1=", size: CGSize(width:329, height: 345))
 }

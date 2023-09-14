@@ -10,7 +10,7 @@ import AppIntents
 
 struct CalculationIntent: AppIntent {
     static var title: LocalizedStringResource = "Calculation button"
-    static var description = IntentDescription("Use alculator in Widget.")
+    static var description = IntentDescription("Use calculator in Widget.")
 
     @Parameter(title: "CalcButton")
     var calcButtonTitle: String
@@ -22,7 +22,7 @@ struct CalculationIntent: AppIntent {
     }
 
     func perform() async throws -> some IntentResult {
-        ModelData.shared.didTap(button: .init(rawValue: calcButtonTitle) ?? .clear)
+        CalculationManager.shared.didTap(button: .init(rawValue: calcButtonTitle) ?? .clear)
         print("Updated")
         return .result()
     }
